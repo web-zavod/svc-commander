@@ -1,14 +1,14 @@
 FROM python:3.10
 
 WORKDIR /app
-ENV PYTHONPATH=/app/scr
+ENV PYTHONPATH=/app/src
 EXPOSE 5000
-RUN mkdir -p scr/
+RUN mkdir -p src/
 
 COPY requirements.txt requirements.txt
 RUN pip install --default-timeout=1000 --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
-COPY scr/ scr/
+COPY src/ src/
 
-ENTRYPOINT ["python", "-u", "-m", "scr"]
+ENTRYPOINT ["python", "-u", "-m", "src"]
