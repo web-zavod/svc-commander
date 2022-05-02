@@ -59,7 +59,7 @@ class Application:
         """Run the application"""
 
         logger.info('Preparing reflection API...')
-        self._service_name.append(reflection.SERVICE_NAME)
+        self._service_names.append(reflection.SERVICE_NAME)
         reflection.enable_server_reflection(
             self._service_names,
             self.grpc_server
