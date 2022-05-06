@@ -6,8 +6,6 @@ services:
       - "5000:5000"
 
   grpcox:
-    depends_on:
-      - app
     image: gusaul/grpcox
     ports:
       - "6969:6969"
