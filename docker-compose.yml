@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+
+  grpcox:
+    image: gusaul/grpcox
+    ports:
+      - "6969:6969"
