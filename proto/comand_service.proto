@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+service CommandService {
+    rpc GetReply(IncomingMessage) returns (ReplyMessage) {}
+}
+
+// Telegram User's message
+message IncomingMessage {
+    // Telegram User's ID
+    int64 user_id = 1;
+    // Incomming message text
+    string text = 2;
+}
+
+message ReplyMessage {
+    // Telegram User's ID
+    int64 user_id = 1;
+    // Reply message from service
+    string text = 2;
+}
