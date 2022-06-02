@@ -2,15 +2,17 @@
 
 __all__ = [
     'healthcheck',
-    'services',
+    'command',
 ]
 
 import logging
 
 from .healthcheck import HealthcheckService
+from .command import CommandServiceServicer
 
 logger = logging.getLogger(__name__)
 
 services = (
     HealthcheckService,
+    CommandServiceServicer,
 )
