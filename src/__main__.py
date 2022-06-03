@@ -4,7 +4,7 @@ from typing import NoReturn, Optional
 
 from .app import Application
 from .logger import setup_logger
-from services import HealthcheckService, CommandServiceServicer
+from services import HealthcheckService, CommandService
 
 main_logger = logging.getLogger(__name__)
 setup_logger()
@@ -21,7 +21,7 @@ async def main() -> Optional[NoReturn]:
             )
     # Command Service
     await app.add_service(
-            CommandServiceServicer,
+            CommandService,
             "command",
             "1",
             )

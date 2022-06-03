@@ -8,11 +8,11 @@ __all__ = [
 import logging
 
 from .healthcheck import HealthcheckService
-from .command import CommandServiceServicer
+from .command import CommandService
 
 logger = logging.getLogger(__name__)
 
 services = (
     HealthcheckService,
-    CommandServiceServicer,
+    CommandService,
 )
