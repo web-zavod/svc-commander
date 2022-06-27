@@ -3,6 +3,3 @@ __pycache__/
 
 # Environments
 venv
-
-# .env file
-.env

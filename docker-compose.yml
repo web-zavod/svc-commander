@@ -2,19 +2,10 @@ version: "3.8"
 services:
   app:
     build: .
-    depends_on:
-      - tg-gateway
     ports:
       - "5000:5000"
 
   grpcox:
-    depends_on:
-      - tg-gateway
     image: gusaul/grpcox
     ports:
       - "6969:6969"
-
-  tg-gateway:
-    image: kuwerin/tg-gateway:latest
-    env_file:
-      - .env
