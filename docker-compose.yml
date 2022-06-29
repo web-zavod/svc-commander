@@ -9,3 +9,8 @@ services:
     image: gusaul/grpcox
     ports:
       - "6969:6969"
+
+  tg-gateway:
+    image: kuwerin/tg-gateway:latest
+    env_file:
+      - .env
