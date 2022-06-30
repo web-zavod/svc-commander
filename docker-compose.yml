@@ -14,3 +14,12 @@ services:
     image: kuwerin/tg-gateway:latest
     env_file:
       - .env
+
+  postgres:
+      image: postgres:14.2
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: pgdb
+      volumes:
+        - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
