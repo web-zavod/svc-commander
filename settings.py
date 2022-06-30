@@ -8,6 +8,7 @@ class RepositorySettings(BaseSettings):
     database: str = "pgdb"
 
 class Settings(BaseSettings):
+    grps_port: str = "[::]:5000"
     app_transport_port: Optional[str] = Field(..., env='APP_TRANSPORT_PORT')
 
     class Config:

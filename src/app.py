@@ -5,12 +5,16 @@ from importlib import import_module
 import grpc
 from grpc_reflection.v1alpha import reflection
 
+from settings import Settings
+
+settings = Settings()
+
 Service = NewType("Service", object)
 
 logger = logging.getLogger(__name__)
 
 class Application:
-    def __init__(self, grpc_port="[::]:5000"):
+    def __init__(self, grpc_port=settings.grps_port):
         logger.info('Prepearing a gRPC server...')
 
         self.grpc_server = grpc.aio.server()
