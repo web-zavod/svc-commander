@@ -14,3 +14,7 @@ services:
     image: kuwerin/tg-gateway:latest
     env_file:
       - .env
+
+  db:
+    image: postgres:14.2
+    restart: always
