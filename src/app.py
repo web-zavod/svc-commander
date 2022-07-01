@@ -17,7 +17,7 @@ class Application:
         logger.info('Prepearing a gRPC server...')
 
         self.grpc_server = grpc.aio.server()
-        self.grpc_port = settings.grpc_port
+        self.grpc_port = settings.app_transport_port
 
         self._service_names: list[Service] = []
 
