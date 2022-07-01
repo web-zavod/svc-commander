@@ -7,18 +7,17 @@ from grpc_reflection.v1alpha import reflection
 
 from settings import Settings
 
-settings = Settings()
-
 Service = NewType("Service", object)
 
 logger = logging.getLogger(__name__)
 
 class Application:
-    def __init__(self, grpc_port=settings.grps_port):
+    settings: Settings
+    def __init__(self, settings: Settings):
         logger.info('Prepearing a gRPC server...')
 
         self.grpc_server = grpc.aio.server()
-        self.grpc_port = grpc_port
+        self.grpc_port = settings.grpc_port
 
         self._service_names: list[Service] = []
 
