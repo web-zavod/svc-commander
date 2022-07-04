@@ -7,6 +7,7 @@ from grpc_reflection.v1alpha import reflection
 
 from settings import AppSettings
 
+
 Service = NewType("Service", object)
 
 logger = logging.getLogger(__name__)

@@ -2,6 +2,7 @@ from typing import Optional
 
 from pydantic_settings import BaseSettingsModel, load_settings
 
+
 class TransportSettings(BaseSettingsModel):
     port: Optional[str] = "[::]:5000"
 

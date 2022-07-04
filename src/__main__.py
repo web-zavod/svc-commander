@@ -5,13 +5,14 @@ from typing import NoReturn, Optional
 from .app import Application
 from .logger import setup_logger
 from services import HealthcheckService, CommandService
-
 from settings import AppSettings
+
 
 settings=AppSettings.load()
 
 main_logger = logging.getLogger(__name__)
 setup_logger()
+
 
 async def main() -> Optional[NoReturn]:
     app = Application(settings=settings)
