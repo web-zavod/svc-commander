@@ -12,12 +12,11 @@ Service = NewType("Service", object)
 logger = logging.getLogger(__name__)
 
 class Application:
-    settings: AppSettings
     def __init__(self, settings: AppSettings):
         logger.info('Prepearing a gRPC server...')
 
         self.grpc_server = grpc.aio.server()
-        self.grpc_port = settings.transport
+        self.grpc_port = settings.transport.port
 
         self._service_names: list[Service] = []
 
