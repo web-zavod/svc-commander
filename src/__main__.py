@@ -8,11 +8,13 @@ from services import HealthcheckService, CommandService
 
 from settings import AppSettings
 
+settings=AppSettings.load()
+
 main_logger = logging.getLogger(__name__)
 setup_logger()
 
 async def main() -> Optional[NoReturn]:
-    app = Application(settings=AppSettings.load())
+    app = Application(settings=settings)
 
     # HealthCheck Service
     main_logger.info('Adding gRPC services...')
