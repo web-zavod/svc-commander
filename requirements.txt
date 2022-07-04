@@ -1,4 +1,5 @@
 grpcio==1.43.0
 grpcio-tools==1.43.0
 grpcio-reflection==1.43.0
+pydantic-settings==0.2.5
 git+https://github.com/web-zavod/botapi.git@master#egg=botapi

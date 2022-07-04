@@ -4,4 +4,5 @@ __all__ = [
     "app",
     "logger",
     "services",
+    "settings",
         ]
