@@ -2,8 +2,11 @@ from typing import Optional
 
 from pydantic_settings import BaseSettingsModel
 
-class Settings(BaseSettingsModel):
-    app_transport_port: Optional[str] = "[::]:5000"
+class TransportSettings(BaseSettingsModel):
+    port: Optional[str] = "[::]:5000"
 
+class AppSettings(BaseSettingsModel):
+    transport: TransportSettings
+    
     class Config:
         env_prefix = 'APP'
