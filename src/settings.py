@@ -14,7 +14,7 @@ class RepositorySettings(BaseSettingsModel):
 
 class AppSettings(BaseSettingsModel):
     transport: TransportSettings
-    repository: RepositorySettings = RepositorySettings()
+    repository: RepositorySettings
 
     class Config:
         env_prefix = 'APP'

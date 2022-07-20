@@ -7,6 +7,7 @@ from grpc_reflection.v1alpha import reflection
 
 from settings import AppSettings
 
+import aiopg
 from aiopg import connect
 from aiopg.connection import Connection, Cursor
 
