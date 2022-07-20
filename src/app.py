@@ -5,6 +5,9 @@ from importlib import import_module
 import grpc
 from grpc_reflection.v1alpha import reflection
 
+from aiopg import connect
+from aiopg.connection import Connection, Cursor
+
 from settings import AppSettings
 
 
@@ -13,6 +16,9 @@ Service = NewType("Service", object)
 logger = logging.getLogger(__name__)
 
 class Application:
+    repository: Connection
+    settings: AppSettings
+
     def __init__(self, settings: AppSettings):
         logger.info('Prepearing a gRPC server...')
 
@@ -58,6 +64,10 @@ class Application:
 
         logger.info('Service `%s` has been added', class_name)
 
+    def _get_db_uri(self) -> str:
+        settings = self.settings.repository
+        return f"postgresql://{settings.user}:{settings.password}@{settings.host}:5432/{settings.database}"
+
     async def run(self):
         """Run the application"""
 
@@ -76,6 +86,15 @@ class Application:
 
         logger.info('Listening to %s.', self.grpc_port)
         return await self.grpc_server.wait_for_termination()
+
+    async def db_connect(self):
+        self.repository = await connect(**self.settings.repository.dict())
+    
+    async def db_disconnect(self):
+        await self.repository.close()
+
+    async def get_db_cursor(self) -> Cursor:
+        return await self.repository.cursor()
 
 def camel_to_snake(s):
     return ''.join(['_'+c.lower() if c.isupper() else c for c in s]).lstrip('_')
