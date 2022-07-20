@@ -8,7 +8,7 @@ services:
       APP_REPOSITORY_USER: "postgres"
       APP_REPOSITORY_PASSWORD: "password"
       APP_REPOSITORY_HOST: "localhost"
-      APP_REPOSITORY_DATEBASE: "pgdb"
+      APP_REPOSITORY_DATABASE: "pgdb"
     ports:
       - "5000:5000"
 
