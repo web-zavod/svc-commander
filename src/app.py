@@ -27,6 +27,8 @@ class Application:
 
         self._service_names: list[Service] = []
 
+        self.settings = settings
+
     async def add_service(
             self,
             service_class: Type[Service],
@@ -98,3 +100,6 @@ class Application:
 
 def camel_to_snake(s):
     return ''.join(['_'+c.lower() if c.isupper() else c for c in s]).lstrip('_')
+
+settings = AppSettings.load()
+application = Application(settings)
