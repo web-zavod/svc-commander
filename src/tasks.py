@@ -17,7 +17,7 @@ from app import application
 async def list_expenses():
     await application.db_connect()
     cursor = await application.get_db_cursor()
-    await cursor.execute("SELECT amount, raw_text FROM exense")
+    await cursor.execute("SELECT amount, raw_text FROM expense")
         
     data: list[tuple] = await cursor.fetchall()
     
