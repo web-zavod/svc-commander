@@ -6,4 +6,5 @@ __all__ = [
     "services",
     "settings",
     "tasks",
+    "repository",
         ]
