@@ -1,17 +1,13 @@
 from typing import AsyncGenerator
-from pydantic import BaseModel
-
-from botapi.command.v1.command_service_pb2 import IncomingMessage
 
 from app import application
 from models import GetExpensesInfo
 
 
-async def list_expenses() -> AsyncGenerator[GetExpensesInfo, None]:
-    user_id: int = IncomingMessage()
+async def list_expenses(user_id: int) -> AsyncGenerator[GetExpensesInfo, None]:
     await application.db_connect()
     cursor = await application.get_db_cursor()
-    await cursor.execute(f"SELECT * FROM expense WHERE owner={user_id.user_id};")
+    await cursor.execute(f"SELECT * FROM expense WHERE owner={user_id};")
     
     data: list[tuple] = await cursor.fetchall()
 
