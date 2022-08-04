@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class GetExpensesInfo(BaseModel):
+class GetExpenses(BaseModel):
     amount: int 
     created: str
     category_id: int
@@ -10,7 +10,7 @@ class GetExpensesInfo(BaseModel):
 
     @classmethod
     def from_row(cls, row: tuple):
-        return GetExpensesInfo(
+        return GetExpenses(
             amount=row[0],
             created=row[1],
             category_id=row[2],

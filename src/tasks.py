@@ -1,8 +1,15 @@
-from ast import In
-from botapi.command.v1.command_service_pb2 import IncomingMessage
-
+from cgitb import text
 from repository import request_repo_psql
+from models import GetExpenses
 
-async def get_expenses(id: IncomingMessage):
-    async for ans in request_repo_psql.list_expenses(id.user_id):
-        return f"Cost: {ans.amount} \n Type: {ans.raw_text}"
+async def get_expenses(user_id: int):
+    expenses: list[GetExpenses] = []
+
+    generator = request_repo_psql.get_many_by_id(user_id)
+
+    async for expens in generator:
+        expenses.append(expens.raw_text)
+
+    text = f"Your's expenses: {', '.join(expenses)}"
+
+    return user_id, text
