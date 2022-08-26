@@ -1,19 +1,22 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
-class GetExpenses(BaseModel):
+class Expenses(BaseModel):
     amount: int 
-    created: str
-    category_id: int
-    raw_text: str
-    user_id: int
+    created: datetime
+    name: str
 
     @classmethod
     def from_row(cls, row: tuple):
-        return GetExpenses(
+        return Expenses(
             amount=row[0],
             created=row[1],
-            category_id=row[2],
-            raw_text=row[3],
-            user_id=row[4],
+            name=row[2],
             )
+
+    def get_info(self):
+        return f"{self.amount} on {self.name} {self.created.strftime('%H:%M %d.%b.%Y')}"
+
+

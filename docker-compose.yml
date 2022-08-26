@@ -30,3 +30,5 @@ services:
         POSTGRES_DB: pgdb
       volumes:
         - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+      ports:
+        - "8081:5432"
