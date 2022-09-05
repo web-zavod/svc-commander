@@ -11,6 +11,6 @@ async def get_expenses(user_id: int):
         #print('debug ---> ', expens.get_info())
         expenses.append(expens.get_info())
 
-    text = 'Your expenses for today: {0}'.format("\n".join(expenses))
+    text = 'Your expenses for today:[newline] {0}'.format("[newline]".join(expenses))
     
     return user_id, text
