@@ -31,4 +31,4 @@ services:
       volumes:
         - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
       ports:
-        - "8081:5432"
+        - "5432:5432"
