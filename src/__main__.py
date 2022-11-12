@@ -2,7 +2,7 @@ import asyncio
 import logging
 from typing import NoReturn, Optional
 
-from .app import Application
+from .app import Application, application 
 from .logger import setup_logger
 from services import HealthcheckService, CommandService
 from settings import AppSettings
@@ -32,6 +32,8 @@ async def main() -> Optional[NoReturn]:
             )
 
     try:
+        await application.db_connect()
+        cursor = await application.get_db_cursor()
         await app.run()
     except Exception as err:
         main_logger.info(f"Error running app: {str(err)}")

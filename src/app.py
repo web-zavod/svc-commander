@@ -89,8 +89,9 @@ class Application:
         logger.info('Listening to %s.', self.grpc_port)
         return await self.grpc_server.wait_for_termination()
 
-    async def db_connect(self):
+    async def db_connect(self) -> Connection:
         self.repository = await connect(**self.settings.repository.dict())
+        return self.repository
     
     async def db_disconnect(self):
         await self.repository.close()
