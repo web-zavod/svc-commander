@@ -1,5 +1,5 @@
 import logging
-from typing import Callable, NewType, Type
+from typing import Callable, NewType, Optional, Type
 from importlib import import_module
 
 import grpc
@@ -28,6 +28,7 @@ class Application:
         self._service_names: list[Service] = []
 
         self.settings = settings
+        self.repository: Optional[Connection] = None
 
     async def add_service(
             self,
@@ -89,15 +90,20 @@ class Application:
         logger.info('Listening to %s.', self.grpc_port)
         return await self.grpc_server.wait_for_termination()
 
-    async def db_connect(self) -> Connection:
+    async def db_connect(self):
         self.repository = await connect(**self.settings.repository.dict())
-        return self.repository
     
     async def db_disconnect(self):
-        await self.repository.close()
+        if self.repository:
+            await self.repository.close()
+        else:
+            raise RuntimeError("Repository connection problem")
 
     async def get_db_cursor(self) -> Cursor:
-        return await self.repository.cursor()
+        if self.repository:
+            return await self.repository.cursor()
+        else:
+            raise RuntimeError("Repository connection problem")
 
 def camel_to_snake(s):
     return ''.join(['_'+c.lower() if c.isupper() else c for c in s]).lstrip('_')

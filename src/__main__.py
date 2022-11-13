@@ -15,17 +15,16 @@ setup_logger()
 
 
 async def main() -> Optional[NoReturn]:
-    app = Application(settings=settings)
 
     # HealthCheck Service
     main_logger.info('Adding gRPC services...')
-    await app.add_service(
+    await application.add_service(
             HealthcheckService,
             "healthcheck",
             "1",
             )
     # Command Service
-    await app.add_service(
+    await application.add_service(
             CommandService,
             "command",
             "1",
@@ -33,13 +32,13 @@ async def main() -> Optional[NoReturn]:
 
     try:
         await application.db_connect()
-        cursor = await application.get_db_cursor()
-        await app.run()
+        await application.run()
     except Exception as err:
+        await application.db_disconnect()
         main_logger.info(f"Error running app: {str(err)}")
         raise
 
-loop = asyncio.new_event_loop()
+loop = asyncio.get_event_loop()
 
 try:
     loop.run_until_complete(main())
