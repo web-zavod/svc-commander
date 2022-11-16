@@ -2,7 +2,7 @@ import asyncio
 import logging
 from typing import NoReturn, Optional
 
-from .app import Application, application 
+from .app import application 
 from .logger import setup_logger
 from services import HealthcheckService, CommandService
 from settings import AppSettings
