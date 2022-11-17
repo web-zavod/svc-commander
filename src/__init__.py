@@ -5,4 +5,6 @@ __all__ = [
     "logger",
     "services",
     "settings",
+    "tasks",
+    "repository",
         ]

@@ -7,10 +7,10 @@ class TransportSettings(BaseSettingsModel):
     port: Optional[str] = "[::]:5000"
 
 class RepositorySettings(BaseSettingsModel):
+    database: Optional[str] = "pgdb"
     user: Optional[str] = "postgres"
     password: Optional[str] = "password"
-    host: Optional[str] = "localhost"
-    database: Optional[str] = "pgdb"
+    host: Optional[str] = "postgres"
 
 class AppSettings(BaseSettingsModel):
     transport: TransportSettings
