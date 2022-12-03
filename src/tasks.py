@@ -31,7 +31,9 @@ async def categories_list(user_id: int):
     cursor.close()
 
     text = f'Your active category: {"{{newline}}".join(categories_list)}' 
-   
+    
+    return user_id, text
+
 async def add_expense(user_id: int, text: str):
     pass
     
