@@ -1,4 +1,4 @@
-from repository import expenses_psql, add_expenses_psql
+from repository import expenses_psql
 
 from __main__ import application
 
@@ -20,14 +20,22 @@ async def get_expenses(user_id: int):
 
 
 async def add_expenses(user_id: int, text: str):
-    cursor = await application.get_db_cursor()
+    expenses_names: list[str] = []
+    category = text.split(' ')[0]
+    amount = text.split(' ')[1]
     
-    if await add_expenses_psql.add_expense_by_id(cursor, user_id, text):
-        text = f'Add expenses: {text}'
-    else:
-        print ('Err -- > Can`t add expense')
+    cursor = await application.get_db_cursor()
+
+    expenses = expenses_psql.get_category_by_id(cursor, user_id)
+    
+    async for expense in expenses:
+        expenses_names.append(expense.get_name())
 
     cursor.close()
-
+    
+    if category in expenses_names:
+        await expenses_psql.add_expense_by_id(cursor, user_id, category, amount)
+    else:
+        await expenses_psql.add_expense_by_id(cursor, user_id, 'прочее', amount)
 
     return user_id, text
