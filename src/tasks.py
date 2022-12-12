@@ -20,9 +20,23 @@ async def get_expenses(user_id: int):
 
 
 async def add_expenses(user_id: int, text: str):
-    expenses_names: list[str] = []
-    category = text.split(' ')[0]
-    amount = text.split(' ')[1]
+    expenses_names: list[tuple] = []
+    text_list: list[str] = []
+    
+    for st in text.split():
+        text_list.append(st)
+
+    print('text_list =======> ', text_list)
+
+    if len(text_list) == 2 :
+        category = text_list[0]
+        amount = text_list[1]
+        try: 
+            amount = int(amount)
+        except ValueError:
+            return user_id, 'Please enter expense and amount. Ex: << кофе 200 >>'
+    else:
+        return user_id, 'Please enter expense and amount. Ex: << кофе 200 >>'
     
     cursor = await application.get_db_cursor()
 
@@ -30,12 +44,22 @@ async def add_expenses(user_id: int, text: str):
     
     async for expense in expenses:
         expenses_names.append(expense.get_name())
-
-    cursor.close()
     
-    if category in expenses_names:
-        await expenses_psql.add_expense_by_id(cursor, user_id, category, amount)
+    print('expenses_names =======> ', expenses_names)
+
+    names: list[str] = []
+    for name in expenses_names:
+        names.append(name[1])
+
+    if category in names:
+        for ca_id in expenses_names:
+            if category == ca_id[1]:
+                category_id = ca_id[0]
+                await expenses_psql.add_expense_by_id(cursor, user_id, category, amount, category_id)
     else:
-        await expenses_psql.add_expense_by_id(cursor, user_id, 'прочее', amount)
+        category_id = 11
+        await expenses_psql.add_expense_by_id(cursor, user_id, 'прочее', amount, category_id)
+ 
+    cursor.close()
 
     return user_id, text
