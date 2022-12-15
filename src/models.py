@@ -19,18 +19,27 @@ class Expenses(BaseModel):
     def get_info(self):
         return f"{self.amount} on {self.name} {self.created.strftime('%H:%M %d.%b.%Y')}"
 
-class ExpensesNames(BaseModel):
-    category_id: int
+class Category(BaseModel):
+    id: int
     name: str
+    is_base_expense: bool
+    aliases: str
 
     @classmethod
     def from_row(cls, row: tuple):
-        return ExpensesNames(
-                category_id=row[0],
+        return Category(
+                id=row[0],
                 name=row[1],
+                is_base_expense=row[2],
+                aliases=row[3],
                 )
 
-    def get_name(self):
-        return self.category_id, self.name
+    def get_category(self):
+        return self.id, self.name, self.is_base_expense, self.aliases
 
+class AddExpense(BaseModel):
+    amount: int
+    category_id: int
+    raw_text: str
+    owner: int
 

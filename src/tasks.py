@@ -1,6 +1,7 @@
-from repository import expenses_psql
+from repository import expenses_psql, category_psql
 
 from __main__ import application
+from models import AddExpense
 
 async def get_expenses(user_id: int):
     expenses_summary: list[str] = []
@@ -40,25 +41,16 @@ async def add_expenses(user_id: int, text: str):
     
     cursor = await application.get_db_cursor()
 
-    expenses = expenses_psql.get_category_by_id(cursor, user_id)
+    expenses = category_psql.find_category_by_name(cursor, category)
     
     async for expense in expenses:
-        expenses_names.append(expense.get_name())
+        expenses_names.append(expense.get_category())
     
     print('expenses_names =======> ', expenses_names)
 
-    names: list[str] = []
-    for name in expenses_names:
-        names.append(name[1])
+    add_ex = AddExpense(amount=amount, category_id=expenses_names[0][0], raw_text=category, owner=user_id,   )
 
-    if category in names:
-        for ca_id in expenses_names:
-            if category == ca_id[1]:
-                category_id = ca_id[0]
-                await expenses_psql.add_expense_by_id(cursor, user_id, category, amount, category_id)
-    else:
-        category_id = 11
-        await expenses_psql.add_expense_by_id(cursor, user_id, 'прочее', amount, category_id)
+    await expenses_psql.add_expense_by_id(cursor, add_ex)
  
     cursor.close()
 
