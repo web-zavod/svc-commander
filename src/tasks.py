@@ -1,6 +1,8 @@
 from repository import expenses_psql, category_psql
+from datetime import datetime
 
 from __main__ import application
+from models import Expenses
 
 
 # Return user`s expense list
@@ -21,7 +23,7 @@ async def get_expenses(user_id: int):
         # Find category by category_id from expense
         category = await category_psql.get_category_by_id(cursor, expense[2])
         # Add srt 'expense + category_name' to list
-        user_expenses.append(category.get_category_name(expense[0], expense[1]))
+        user_expenses.append(category.get_category(expense[0], expense[1]))
 
     cursor.close()
 
@@ -31,7 +33,7 @@ async def get_expenses(user_id: int):
 
 # Add new user`s expense
 async def add_expenses(user_id: int, text: str):
-    expenses_names: list[tuple] = []
+    category_id: int
     text_list: list[str] = []
    
     # Separate text on category and expense
@@ -41,10 +43,10 @@ async def add_expenses(user_id: int, text: str):
     print('text_list =======> ', text_list)
 
     if len(text_list) == 2 :
-        category = text_list[0]
-        amount = text_list[1]
+        enter_category = text_list[0]
+        enter_amount = text_list[1]
         try: 
-            amount = int(amount)
+            amount = int(enter_amount)
         except ValueError:
             return user_id, 'Please enter expense and amount. Ex: << кофе 200 >>'
     else:
@@ -52,16 +54,16 @@ async def add_expenses(user_id: int, text: str):
     
     cursor = await application.get_db_cursor()
 
-    category_flag = category_psql.find_category_by_name(cursor, category)
+    # Make category id for enter_category
+    category = await category_psql.find_category_by_name(cursor, enter_category)
+    category_id = category.get_category_id()
     
-    async for ca in category_flag:
-        expenses_names.append(ca.get_category())
+    print('expenses_names =======> ', category_id)
     
-    print('expenses_names =======> ', expenses_names)
-
-    #add_ex = AddExpense(amount=amount, category_id=expenses_names[0][0], raw_text=category, owner=user_id,   )
-    #
-    #await expenses_psql.add_expense_by_id(cursor, add_ex)
+    # Add expense
+    new_expense = Expenses.from_row((1, amount, datetime.now(), category_id,
+                                     enter_category, user_id))
+    await expenses_psql.add_expense_by_id(cursor, new_expense)
  
     cursor.close()
 

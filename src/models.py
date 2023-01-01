@@ -23,7 +23,6 @@ class Expenses(BaseModel):
             )
 
     def get_info(self):
-        #return f"{self.amount} on {self.name} {self.created.strftime('%H:%M %d.%b.%Y')}"
         return self.amount, self.created.strftime('%H:%M %d.%b.%Y'), \
                 self.category_id
 
@@ -42,11 +41,10 @@ class Category(BaseModel):
                 aliases=row[3],
                 )
 
-    def get_category_name(self, amount: int, created: int):
+    def get_category(self, amount: int, created: int):
         return f"{amount} on {self.name} {created}"
-        #return self.name
 
-    def get_category(self):
-        return self.id, self.name, self.is_base_expense, self.aliases
+    def get_category_id(self):
+        return self.id
 
 
