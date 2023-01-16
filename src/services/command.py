@@ -6,8 +6,8 @@ from tasks import get_expenses, add_expenses
 class CommandService(CommandServiceServicer):
     async def GetReply(self, request: IncomingMessage, context) -> ReplyMessage:
         if request.text == '/list':
-            user_id, text= await get_expenses(request.user_id)
+            user_id, text = await get_expenses(request.user_id)
             return ReplyMessage(user_id=user_id, text=text)
         else:
-            user_id, text= await add_expenses(request.user_id, request.text)
+            user_id, text = await add_expenses(request.user_id, request.text)
             return ReplyMessage(user_id=user_id, text=text)

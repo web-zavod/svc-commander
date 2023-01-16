@@ -3,28 +3,26 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class Expenses(BaseModel):
-    id: int
+class Expense(BaseModel):
     amount: int 
     created: datetime
     category_id: int
-    raw_text: str
+    category_name: str
     owner: int
 
     @classmethod
     def from_row(cls, row: tuple):
-        return Expenses(
-            id=row[0],
-            amount=row[1],
-            created=row[2],
-            category_id=row[3],
-            raw_text=row[4],
-            owner=row[5],
+        return Expense(
+            amount=row[0],
+            created=row[1],
+            category_id=row[2],
+            category_name=row[3],
+            owner=row[4],
             )
 
-    def get_info(self):
-        return self.amount, self.created.strftime('%H:%M %d.%b.%Y'), \
-                self.category_id
+    def get_info(self) -> str:
+        return f"{self.amount} on {self.category_name} {self.created.strftime('%H:%M %d.%b.%Y')}"
+
 
 class Category(BaseModel):
     id: int
@@ -40,11 +38,4 @@ class Category(BaseModel):
                 is_base_expense=row[2],
                 aliases=row[3],
                 )
-
-    def get_category(self, amount: int, created: int):
-        return f"{amount} on {self.name} {created}"
-
-    def get_category_id(self):
-        return self.id
-
 
