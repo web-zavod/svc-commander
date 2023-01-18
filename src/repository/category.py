@@ -7,19 +7,17 @@ from models import Category
 
 class CategoryRepository:
     @classmethod
-    async def find_by_name(cls, cursor: Cursor, category_name: str):
+    async def find_by_name(cls, cursor: Cursor, name: str) -> Category:
         await cursor.execute(
-                            "SELECT * FROM category AS ca " +
-                            "WHERE (ca.name=%s);",
-                            (category_name, )
+                            "SELECT * FROM category AS ca WHERE (ca.name=%s);",
+                            (name, )
                             )
 
         data: list[tuple] = await cursor.fetchall()
 
         if len(data) == 0:
             await cursor.execute(
-                                "SELECT * FROM category AS ca " + 
-                                "WHERE (ca.name='прочее');"
+                                "SELECT * FROM category AS ca WHERE (ca.name='прочее');"
                                 )
 
             data: list[tuple] = await cursor.fetchall()

@@ -1,16 +1,16 @@
-from repository import expenses_psql, category_psql
 from datetime import datetime
 
 from __main__ import application
 from models import Expense
-
+from repository.expense import ExpenseRepository
+from repository.category import CategoryRepository
 
 async def get_expenses(user_id: int) -> tuple[int, str]:
     expenses_summary: list[str] = []
 
     cursor = await application.get_db_cursor()
 
-    expenses = expenses_psql.ExpenseRepository.get_many_by_id(cursor, user_id)
+    expenses = ExpenseRepository.get_many_by_id(cursor, user_id)
 
     async for expense in expenses:    
         expenses_summary.append(expense.get_info())
@@ -24,19 +24,17 @@ async def get_expenses(user_id: int) -> tuple[int, str]:
 async def add_expenses(user_id: int, text: str) -> tuple[int, str]:
     match text.split():
         case [category, amount]:
-            try: 
+            if amount.isnumeric():
                 enter_category: str = str(category)
                 enter_amount: int = int(amount)
-            except ValueError:
+            else:
                 return user_id, 'Please enter expense and amount. Ex: << кофе 200 >>'
         case _:
             return user_id, 'Please enter expense and amount. Ex: << кофе 200 >>'
 
     cursor = await application.get_db_cursor()
 
-    category = await category_psql.CategoryRepository.find_by_name(cursor, enter_category)
-
-    print('time =======> ',datetime.today())
+    category = await CategoryRepository.find_by_name(cursor, enter_category)
 
     expense = Expense(amount= enter_amount,
             created = datetime.today(),
@@ -44,7 +42,7 @@ async def add_expenses(user_id: int, text: str) -> tuple[int, str]:
             category_name = enter_category,
             owner = user_id 
                       )
-    await expenses_psql.ExpenseRepository.add_by_id(cursor, expense)
+    await ExpenseRepository.add_by_id(cursor, expense)
 
     cursor.close()
 
