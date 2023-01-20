@@ -21,10 +21,13 @@ async def get_expenses(user_id: int) -> tuple[int, str]:
         
     return user_id, text
 
-async def add_expenses(user_id: int, text: str) -> tuple[int, str]:
+async def add_expense(user_id: int, text: str) -> tuple[int, str]:
     match text.split():
         case [category, amount]:
-            if amount.isnumeric():
+            if category.isnumeric():
+                enter_category: str = str(amount)
+                enter_amount: int = int(category)
+            elif amount.isnumeric():
                 enter_category: str = str(category)
                 enter_amount: int = int(amount)
             else:
@@ -42,7 +45,7 @@ async def add_expenses(user_id: int, text: str) -> tuple[int, str]:
             category_name = enter_category,
             owner = user_id 
                       )
-    await ExpenseRepository.add_by_id(cursor, expense)
+    await ExpenseRepository.save(cursor, expense)
 
     cursor.close()
 
