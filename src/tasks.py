@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from __main__ import application
 from models import Expense
@@ -39,8 +39,9 @@ async def add_expense(user_id: int, text: str) -> tuple[int, str]:
 
     category = await CategoryRepository.find_by_name(cursor, enter_category)
 
-    expense = Expense(amount= enter_amount,
-            created = datetime.today(),
+    expense = Expense(
+            amount = enter_amount,
+            created = datetime.now(),
             category_id = category.id,
             category_name = enter_category,
             owner = user_id 

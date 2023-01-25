@@ -9,7 +9,7 @@ class ExpenseRepository:
     @classmethod
     async def get_many_by_id(cls, cursor: Cursor, user_id: int) -> AsyncGenerator[Expense, None]:
         await cursor.execute(
-                "SELECT ex.amount, ex.created, ex.category_id, ca.name, ex.owner FROM expense AS ex JOIN category AS ca ON (ex.category_id=ca.id AND owner=%s);", (user_id, ) )
+                "SELECT ex.amount, ex.created, ex.category_id, ca.name, ex.owner FROM expense AS ex JOIN category AS ca ON (ex.category_id=ca.id AND owner=%s) ORDER BY ex.created;", (user_id, ) )
 
         data: list[tuple] = await cursor.fetchall()
 
