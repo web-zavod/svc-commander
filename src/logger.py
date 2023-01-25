@@ -6,6 +6,7 @@ import logging
 import sys
 from enum import Enum
 
+
 class Level(str, Enum):
     """Enum of available logger levels"""
     DEBUG = logging.getLevelName(logging.DEBUG)
